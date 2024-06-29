@@ -4,11 +4,13 @@
         <br>
         <NuxtLink to="/login">Login</NuxtLink>
         <br>
-        <NuxtLink to="/logout">Logout</NuxtLink>
+        <NuxtLink v-if="user" to="/dashboard">Dashboard</NuxtLink>
         <br>
     </div>
 </template>
 
 <script setup lang="ts">
+    const supabase = useSupabaseClient()
+    const user = useSupabaseUser()
 
 </script>
