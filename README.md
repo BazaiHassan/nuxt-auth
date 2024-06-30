@@ -72,4 +72,6 @@ yarn preview
 bun run preview
 ```
 
+![Alt Text](images/register.png)
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
