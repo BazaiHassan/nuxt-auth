@@ -1,38 +1,36 @@
 <template>
-  <div>
-    <label>email</label>
-    <br>
-    <input type="email" v-model="email" />
-    <br>
-    <br>
-    <label>password</label>
-    <br>
-    <input type="password" v-model="password" />
-    <br>
-    <br>
-    <label>username</label>
-    <br>
-    <input type="text" v-model="username" />
-    <br>
-    <br>
+  <div class="flex flex-row justify-center h-screen bg-slate-100 items-center" >
+  <Card class="w-[350px]">
+    <CardHeader>
+      <CardTitle>Create Account</CardTitle>
+      <CardDescription>Create account to interact with our services.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <div class="grid items-center w-full gap-4">
+          <div class="flex flex-col space-y-6">
+          
+            <Input   type="email" placeholder="Email Address" v-model="email"/>
+            
+            <Input   type="password" placeholder="Password" v-model="password"/>
 
-    <label>address</label>
-    <br>
-    <input type="text" v-model="address" />
-    <br>
-    <br>
-    <div v-if="!successMsg">
-      <button @click="signUp">Sign up</button>
-    </div>
-    <div v-else>
-      <p v-if="errorMsg">Error!!</p>
-      <p v-else>Success!!</p>
-    </div>
-  
-  </div>
+            <Input   type="text" placeholder="Username" v-model="username"/>
+
+            <Input   type="text" placeholder="Address" v-model="address"/>
+
+          </div>
+        </div>
+    </CardContent>
+    <CardFooter class="flex justify-between px-6 pb-6">
+      <Button @click="signUp" class="w-full">Register</Button>
+    </CardFooter>
+  </Card>
+</div>
 </template>
 
+
 <script setup lang="ts">
+import { useToast } from '@/components/ui/toast/use-toast'
+
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
   const email = useState(() => "");
@@ -42,9 +40,12 @@
   const successMsg = useState(() => false);
   const errorMsg = useState(() => false);
 
+  const {toast} = useToast()
+
   if (user.value) await navigateTo("/dashboard");
 
   const signUp = async () => {
+
     const { data, error } = await supabase.auth.signUp({
       email: email.value,
       password: password.value,
@@ -59,8 +60,18 @@
     if(error) {
       successMsg.value = false
       errorMsg.value = true
+      toast({
+        title: 'Opps',
+        description: 'Login failed, please try again.',
+        variant: 'destructive',
+      });
       return
     }
+
+    toast({
+        title: 'Horay',
+        description: 'Login Successfull, enjoy.',
+      });
 
     errorMsg.value = false
     successMsg.value = true
