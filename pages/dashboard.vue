@@ -29,7 +29,7 @@ definePageMeta({
     middleware:[
         async ()=> {
             const user = useSupabaseUser()
-            if(!user){
+            if(!user.value){
                 return navigateTo('/login')
             }
         }
